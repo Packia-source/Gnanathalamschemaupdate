@@ -1,0 +1,25 @@
+name: Flyway Auto Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Show Deployment Info
+        run: |
+          echo "Deploying on $(hostname)"
+          pwd
+          ls -la
+
+      - name: Run Flyway Migrations
+        run: |
+          chmod +x deploy_all.sh
+          ./deploy_all.sh
