@@ -18,7 +18,7 @@ do
     cd "$BASE_DIR/$schema"
 
     echo "Running Validate..."
-    flyway -configFiles=flyway.conf validate
+    echo "flyway -configFiles=flyway.conf validate"
 
     echo "Running Migrate..."
     flyway -configFiles=flyway.conf migrate
