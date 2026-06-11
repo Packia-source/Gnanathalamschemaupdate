@@ -2,6 +2,8 @@
 
 set -e
 
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 echo "================================="
 echo "STARTING FLYWAY DEPLOYMENT"
 echo "================================="
@@ -13,14 +15,12 @@ do
     echo "Deploying $schema"
     echo "---------------------------------"
 
-    cd "$GITHUB_WORKSPACE/$schema"
+    cd "$BASE_DIR/$schema"
 
     echo "Running Validate..."
-
     flyway -configFiles=flyway.conf validate
 
     echo "Running Migrate..."
-
     flyway -configFiles=flyway.conf migrate
 
     echo "$schema Completed"
