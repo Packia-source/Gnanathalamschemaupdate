@@ -9,39 +9,27 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-          script: |
+      - name: Show Branch Info
+        run: |
+          echo "================================="
+          echo "AUTO DEPLOY START"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "================================="
 
-            set -e
+      - name: Make deploy script executable
+        run: chmod +x deploy_all.sh
 
-            echo "================================="
-            echo "AUTO DEPLOY START"
-            echo "Branch: ${{ github.ref_name }}"
-            echo "================================="
+      - name: Run Flyway Deployment
+        run: ./deploy_all.sh
 
-            # Go to repo
-            cd ~/Gnanathalamschemaupdate
-
-            # Ensure clean sync with correct branch
-            git fetch origin
-            git checkout ${{ github.ref_name }}
-            git reset --hard origin/${{ github.ref_name }}
-
-            echo "Code synced successfully"
-
-            # Run deployment
-            chmod +x deploy_all.sh
-            ./deploy_all.sh
-
-            echo "================================="
-            echo "DEPLOYMENT SUCCESS"
-            echo "================================="
+      - name: Deployment Complete
+        run: |
+          echo "================================="
+          echo "DEPLOYMENT SUCCESS"
+          echo "================================="
