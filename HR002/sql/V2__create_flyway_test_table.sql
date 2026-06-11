@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS pgagent.flyway_test (
+CREATE TABLE IF NOT EXISTS flyway_test (
     id BIGSERIAL PRIMARY KEY,
     employee_name VARCHAR(100) NOT NULL,
     department VARCHAR(100),
