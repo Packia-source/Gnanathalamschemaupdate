@@ -26,10 +26,10 @@ jobs:
             echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/GnanaThalam" >> $GITHUB_ENV
 
           elif [ "${{ github.ref_name }}" = "UAT" ]; then
-            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam" >> $GITHUB_ENV
+            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam_14052026" >> $GITHUB_ENV
 
           elif [ "${{ github.ref_name }}" = "Prod" ]; then
-            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam_14052026" >> $GITHUB_ENV
+            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam_18042026" >> $GITHUB_ENV
           fi
 
       # =========================
