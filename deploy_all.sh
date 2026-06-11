@@ -2,31 +2,23 @@
 
 set -e
 
-BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
-
 echo "================================="
-echo "STARTING FLYWAY DEPLOYMENT"
+echo "FLYWAY DEPLOYMENT START"
 echo "================================="
 
-for schema in HR001 HR002 HR003
+for module in HR001 HR002 HR003
 do
     echo ""
-    echo "---------------------------------"
-    echo "Deploying $schema"
-    echo "---------------------------------"
+    echo "Deploying $module"
 
-    cd "$BASE_DIR/$schema"
+    cd "$GITHUB_WORKSPACE/$module"
 
-    echo "Running Validate..."
-    echo "flyway -configFiles=flyway.conf validate"
+    echo "Running Flyway..."
 
-    echo "Running Migrate..."
     flyway -configFiles=flyway.conf migrate
 
-    echo "$schema Completed"
 done
 
-echo ""
 echo "================================="
-echo "ALL DEPLOYMENTS COMPLETED"
+echo "DEPLOYMENT COMPLETE"
 echo "================================="

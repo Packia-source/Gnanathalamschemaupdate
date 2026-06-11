@@ -15,21 +15,35 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Show Branch Info
+      # =========================
+      # STEP 1: Decide DB by branch
+      # =========================
+      - name: Set environment variables based on branch
         run: |
-          echo "================================="
-          echo "AUTO DEPLOY START"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "================================="
+          echo "Branch = ${{ github.ref_name }}"
 
-      - name: Make deploy script executable
-        run: chmod +x deploy_all.sh
+          if [ "${{ github.ref_name }}" = "Dev" ]; then
+            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/GnanaThalam" >> $GITHUB_ENV
 
-      - name: Run Flyway Deployment
-        run: ./deploy_all.sh
+          elif [ "${{ github.ref_name }}" = "UAT" ]; then
+            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam" >> $GITHUB_ENV
 
-      - name: Deployment Complete
+          elif [ "${{ github.ref_name }}" = "Prod" ]; then
+            echo "FLYWAY_URL=jdbc:postgresql://10.24.2.18:5432/gnanathalam_14052026" >> $GITHUB_ENV
+          fi
+
+      # =========================
+      # STEP 2: Secrets (always same)
+      # =========================
+      - name: Set DB credentials
         run: |
-          echo "================================="
-          echo "DEPLOYMENT SUCCESS"
-          echo "================================="
+          echo "FLYWAY_USER=postgres" >> $GITHUB_ENV
+          echo "FLYWAY_PASSWORD=NewStrongPassword" >> $GITHUB_ENV
+
+      # =========================
+      # STEP 3: Run deployment
+      # =========================
+      - name: Run Flyway Deploy
+        run: |
+          chmod +x deploy_all.sh
+          ./deploy_all.sh
