@@ -3,7 +3,7 @@ name: Flyway Auto Deployment
 on:
   push:
     branches:
-      - Prod
+      - Dev
 
 jobs:
   deploy:
@@ -13,13 +13,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Show Deployment Info
+      - name: Show Server Info
         run: |
-          echo "Deploying on $(hostname)"
+          echo "Server Name:"
+          hostname
+
+          echo "Current Directory:"
           pwd
+
+          echo "Repository Contents:"
           ls -la
 
-      - name: Run Flyway Migrations
+      - name: Verify Flyway
+        run: |
+          flyway -v
+
+      - name: Execute Deployment
         run: |
           chmod +x deploy_all.sh
           ./deploy_all.sh
