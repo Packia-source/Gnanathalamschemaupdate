@@ -2,18 +2,23 @@
 
 set -e
 
-echo "===== DEPLOYMENT STARTED ====="
+echo "================================="
+echo "FLYWAY DEPLOYMENT START"
+echo "================================="
 
-for schema in HR001 HR002 HR003
+for module in HR001 HR002 HR003
 do
-    echo "--------------------------------"
-    echo "Migrating: $schema"
-    echo "--------------------------------"
+    echo ""
+    echo "Deploying $module"
 
-    cd "$GITHUB_WORKSPACE/$schema"
+    cd "$GITHUB_WORKSPACE/$module"
 
-    flyway -configFiles=flyway.conf validate
+    echo "Running Flyway..."
+
     flyway -configFiles=flyway.conf migrate
+
 done
 
-echo "===== DEPLOYMENT COMPLETED ====="
+echo "================================="
+echo "DEPLOYMENT COMPLETE"
+echo "================================="
